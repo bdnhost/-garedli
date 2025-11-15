@@ -1,0 +1,104 @@
+direction: right
+
+// Define Agents
+Dispatcher: {
+
+  label: "סוכן ניהול ובחירת אסטרטגיה\n(Dispatcher Agent)"
+  style: {
+    fill: "#a8dadc"
+  }
+}
+
+AntiBot: {
+
+  label: "סוכן עקיפת חסימות\n(Anti-Bot Agent)"
+  style: {
+    fill: "#457b9d"
+  }
+}
+
+Extractor: {
+
+  label: "סוכן ניתוח ומיצוי נתונים\n(Extractor Agent)"
+  style: {
+    fill: "#1d3557"
+    font-color: "#f1faee"
+  }
+}
+
+Validator: {
+
+  label: "סוכן וולידציה ובקרת איכות\n(Validator Agent)"
+  style: {
+    fill: "#e63946"
+    font-color: "#f1faee"
+  }
+}
+
+// Define Core Scraping Tools
+Scrapy: {
+
+  label: "Scrapy Framework\n(Python, Async)"
+  style: {
+    fill: "#f1faee"
+  }
+}
+
+Playwright: {
+
+  label: "Playwright\n(Headless Browser)"
+  style: {
+    fill: "#f1faee"
+  }
+}
+
+// Define External Components
+Input: {
+
+  label: "קלט: URL + סכמת נתונים"
+  style: {
+    fill: "#fca311"
+  }
+}
+
+Output: {
+
+  label: "פלט: נתונים מובנים (JSON/CSV)"
+  style: {
+    fill: "#14213d"
+    font-color: "#f1faee"
+  }
+}
+
+ProxyPool: {
+
+  label: "מאגר פרוקסי (Residential/Mobile)"
+  style: {
+    fill: "#9d4edd"
+    font-color: "#f1faee"
+  }
+}
+
+// Define Flow
+Input -> Dispatcher
+
+Dispatcher -> Scrapy
+Dispatcher -> Playwright
+
+Scrapy -> Extractor
+Playwright -> Extractor
+
+Extractor -> Validator
+
+Validator -> Output
+Validator -> Dispatcher
+
+// Anti-Bot Interaction
+Dispatcher -> AntiBot
+AntiBot -> ProxyPool
+AntiBot -> Playwright
+AntiBot -> Dispatcher
+
+// Feedback Loop
+Validator -> Extractor
+Extractor -> Dispatcher
